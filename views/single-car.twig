@@ -1,0 +1,159 @@
+<main id="single-car">
+    {% if different_featured_image == true %}
+    <section class="hero" style="background-image: url('{{ featured_image }}')">
+        {% endif %}
+        {% if different_featured_image == false %}
+        <section class="hero" style="background-image: url('{{ cover_image }}')">
+            {% endif %}
+            <div class="inner-container">
+                <div class="heart-button">
+                    <a href="#nothing" onclick="update_single_car_likes(event, {{ carID }});return false;"
+                        id="single-car-{{ carID }}">
+                        <i class="fa-regular fa-heart"></i>
+                    </a>
+                    <p><b id="likes_count">{{ likes }}</b><br>likes</p>
+
+                    <div class="share">
+                        <!-- Facebook (url) -->
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ permalink }}">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+
+                        <!-- Twitter (url, text, @mention) -->
+                        <a
+                            href="https://twitter.com/share?url={{ permalink }}&text=Hey all look at this luxury {{ name }}!">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="inner-container single-car__description">
+            <div class="single-car__description__data">
+                <img class="single-car__description__data__view" src="{{ preview_default_image }}"
+                    id="gallery-preview-image" alt="Car preview">
+                <div class="single-car__description__data__gallery" id="gallery-images">
+                    {% for image in images %}
+                    <button class="single-car__description__data__gallery__container"
+                        onclick="setPreviewImage('{{ image.full_image_url }}');">
+                        <img src="{{ image.full_image_url }}" alt="{{ image.alt }}" />
+                    </button>
+                    {% endfor %}
+
+                    {% set length = 6 - images|length %}
+                    {% if length > 0 %}
+                    {% for i in 1..length %}
+                    <div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="single-car__description__data__table">
+                    {% if table != false and table != NULL %}
+                    <div class="single-car__description__data__table__row">
+                        <p><b>CAR SPECIFICATIONS</b></p>
+                    </div>
+                    {% for row in table.body %}
+                    <div class="single-car__description__data__table__row">
+                        <p>{{ row[0].c }}</p>
+                        <p>{{ row[1].c }}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="single-car__description__general">
+                <h1>{{ name }}</h1>
+                <b>Rent for {{ rental_price }}€ / day</b>
+                <p>{{ description }}</p>
+                <a class="primary-button" href="{{ function('get_site_url') }}/contact-us"><i
+                        class="fa-solid fa-calendar-days"></i> MAKE A RESERVATION
+                    TODAY</a>
+                <a class="secondary-button" href="{{ function('get_site_url') }}/contact-us"><i
+                        class="fa-solid fa-percent"></i> REQUEST DISCOUNT FOR MULTIPLE
+                    DAYS</a>
+            </div>
+        </section>
+
+        <section class="hottest-cars-section">
+            <div class="inner-container">
+                <h2>Hottest cars right now 🔥</h2>
+                {% include('partials/hottest-cars.twig') %}
+            </div>
+        </section>
+
+        {% include('partials/services.twig') %}
+</main>
+
+<script>
+    const galleryPreviewImage = document.getElementById('gallery-preview-image');
+
+    function setPreviewImage(url) {
+        galleryPreviewImage.src = url;
+    }
+</script>
+
+<script>
+    // Initialize likes
+    const likeButton = document.getElementById('single-car-{{ carID }}');
+    if (localStorage.getItem(likeButton.id.replace('single-', '')) != null) {
+        likeButton.innerHTML = '<i class="fa-solid fa-heart"></i>';
+    }
+
+
+    function update_single_car_likes(event, id) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (document.getElementById(`single-car-${id}`).innerHTML != '<i class="fa-solid fa-spinner rotate"></i>') {
+            document.getElementById(`single-car-${id}`).innerHTML = '<i class="fa-solid fa-spinner rotate"></i>';
+
+            if (localStorage.getItem(`car-${id}`) != null) {
+                jQuery.ajax("/luxury-car-rental//wp-admin/admin-ajax.php", {
+                    type: "POST",
+                    data: {
+                        action: 'update_like',
+                        id: id,
+                        like: false,
+                    },
+                    success: function (result, status, xhrRequest) {
+                        if (JSON.parse(result)) {
+                            likes_count = parseInt(document.getElementById('likes_count').innerHTML);
+                            document.getElementById('likes_count').innerHTML = likes_count - 1;
+
+                            document.getElementById(`single-car-${id}`).innerHTML = '<i class="fa-regular fa-heart"></i>';
+                            localStorage.removeItem(`car-${id}`);
+                        }
+                    },
+                    error: function (xhrRequest, status, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+            } else {
+                jQuery.ajax("/luxury-car-rental//wp-admin/admin-ajax.php", {
+                    type: "POST",
+                    data: {
+                        action: 'update_like',
+                        id: id,
+                        like: true,
+                    },
+                    success: function (result, status, xhrRequest) {
+                        if (JSON.parse(result)) {
+                            likes_count = parseInt(document.getElementById('likes_count').innerHTML);
+                            document.getElementById('likes_count').innerHTML = likes_count + 1;
+
+                            document.getElementById(`single-car-${id}`).innerHTML = '<i class="fa-solid fa-heart"></i>';
+                            localStorage.setItem(`car-${id}`, true);
+                        }
+                    },
+                    error: function (xhrRequest, status, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+            }
+        }
+
+        return false;
+    }
+</script>

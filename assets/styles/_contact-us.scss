@@ -1,0 +1,107 @@
+.contact-us {
+    display: flex;
+    min-height: 100vh;
+    min-height: calc(100vh - 110px);
+
+    &__map {
+        width: 50%;
+        padding-right: 10px;
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 10px 20px 30px;
+        max-width: 640px;
+
+        h1 {
+            margin-bottom: 0px;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4%;
+            margin-bottom: 0px;
+
+            p {
+                width: 48%;
+                display: inline-block;
+                margin-top: 10px;
+
+                * {
+                    width: 100%;
+                }
+
+                input,
+                select,
+                textarea {
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+                    border-radius: 24px;
+                    padding: 10px 20px;
+                    border: none;
+
+                    font-family: "Poppins";
+                    font-size: 16px;
+
+                    margin-top: 8px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            p:nth-child(6) {
+                width: 100%;
+            }
+
+            .primary-button {
+                width: max-content;
+            }
+        }
+
+        &__details {
+            h2 {
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-weight: 400;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $md) {
+    .contact-us {
+        flex-direction: column-reverse;
+
+        &__info {
+            padding: 30px 10px 30px 10px;
+            max-width: 100%;
+        }
+
+        &__map {
+            width: 100%;
+            padding-right: 0px;
+            height: 50vh;
+        }
+    }
+}
+
+@media screen and (max-width: $sm) {
+    .contact-us {
+        &__info {
+            form {
+                p {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

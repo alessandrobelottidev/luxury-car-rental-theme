@@ -1,0 +1,246 @@
+$accent-color: #ffca42;
+$hover-accent-color: #ebb839;
+$primary-color: #000000;
+$secondary-color: #a2a2a2;
+$primary-bg-color: #f8f8f8;
+$secondary-bg-color: #ffffff;
+
+$black-layer-40: #00000040;
+$black-layer-50: #00000050;
+$black-layer-60: #00000060;
+
+$lg: 1280px;
+$md: 768px;
+$sm: 468px;
+$s: 320px;
+$xs: 280px;
+
+body {
+    margin: 0px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    color: $primary-color;
+    background-color: $primary-bg-color;
+    padding-top: 110px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0px;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+input {
+    font-family: "Poppins";
+    font-size: 16px;
+    font-weight: 400;
+    transition: all 0.2s;
+    outline: transparent solid 2px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: $accent-color solid 2px;
+}
+
+main {
+    overflow: hidden;
+}
+
+.inner-container {
+    max-width: $lg;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.primary-button {
+    font-family: "Poppins";
+    font-size: 16px;
+    font-weight: 500;
+    background-color: $accent-color;
+    padding: 10px 20px;
+    border-radius: 24px;
+    transition: all 0.2s;
+    color: $primary-color;
+    border: none;
+
+    i {
+        margin-right: 4px;
+    }
+}
+
+.primary-button:hover {
+    background-color: $hover-accent-color;
+    cursor: pointer;
+}
+
+.secondary-button {
+    font-family: "Poppins";
+    font-size: 16px;
+    font-weight: 500;
+
+    background-color: transparent;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+
+    padding: 10px 20px;
+    border-radius: 24px;
+
+    transition: all 0.2s;
+
+    i {
+        margin-right: 4px;
+    }
+}
+
+.secondary-button:hover {
+    background-color: $primary-color;
+    color: #fff;
+    cursor: pointer;
+}
+
+.card {
+    border-radius: 20px;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
+    transition: all 0.2s;
+    width: 32%;
+    cursor: pointer;
+
+    &__img-container {
+        overflow: hidden;
+        border-radius: 20px 20px 0px 0px;
+        width: 100%;
+        aspect-ratio: 16/9;
+
+        img {
+            width: 100%;
+            border-radius: 20px 20px 0px 0px;
+            transition: all 0.2s;
+        }
+    }
+
+    &__info {
+        position: relative;
+        padding: 10px 20px 20px 20px;
+        border-radius: 0px 0px 20px 20px;
+        background-color: $secondary-bg-color;
+
+        h3 {
+            padding-bottom: 6px;
+            width: 94%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .like-btn-card {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.25rem;
+            transition: all 0.2s;
+
+            i.fa-solid.fa-heart {
+                color: $accent-color;
+            }
+
+            i.fa-solid.fa-spinner {
+                color: $primary-color;
+            }
+        }
+
+        .like-btn-card:hover {
+            cursor: pointer;
+            transform: scale(1.4);
+        }
+
+        .like-btn-card:focus {
+            outline: none;
+        }
+    }
+}
+
+.card:hover {
+    transform: translateY(-10px);
+
+    img {
+        transform: scale(1.2);
+    }
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: $md) {
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: $sm) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+}
+
+@import "header";
+@import "front-page";
+@import "car-collection";
+@import "single-car";
+@import "contact-us";
+@import "404";
+@import "footer";

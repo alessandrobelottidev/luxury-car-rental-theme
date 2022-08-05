@@ -1,0 +1,14 @@
+/*
+Theme Name: Luxury Car Rental theme
+Theme URI: https://demo.belottidigital.com/luxury-car-rental
+Author: Alessandro Belotti
+Author URI: https://belottidigital.com
+Description: This is a custom developed theme made from scratch made as a test project for Pleiax S.R.L. . For this theme to work properly the following pages have to be created: <code>Homepage (template: front-page)</code>, <code>Contact us (slug: contact-us)</code>, <code>Car collection (slug: car-collection)</code>, <code>My favourites (slug: my-favourites)</code> and <code>Search results (slug: search-results)</code>.
+Version: 0.1
+Requires at least: 5.0
+Tested up to: 6.1
+Requires PHP: 7.3
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: luxury_car_rental_theme
+*/

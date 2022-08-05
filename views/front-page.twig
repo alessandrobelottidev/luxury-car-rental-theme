@@ -1,0 +1,164 @@
+<main id="front-page">
+
+	<section class="hero">
+		<div class="inner-container">
+			<h1>Your next luxury adventure is here</h1>
+
+			<form id="search-car-form" action="{{ function('get_site_url') }}/search-results/" autocomplete="off">
+				<div class="search-input">
+					<input type="text" name="query" id="find-your-car-input" placeholder="Lamborghini" autofocus/>
+					<button class="primary-button" type="submit">
+						<i class="fa-solid fa-magnifying-glass"></i>Search</button>
+					<div class="search-box" id="search-box">
+						<div class="search-box__search-result">
+							<i style="width: 1rem; height: 1rem;" class="fa-solid fa-spinner rotate"></i>
+							<p style="margin-left: 10px">Loading your data...</p>
+						</div>
+					</div>
+				</div>
+				<p>Type your dream car’s or manufacturer’s name in here...</p>
+			</form>
+		</div>
+	</section>
+
+	<section class="luxury-brands">
+		<div class="inner-container">
+			<div class="luxury-brands__single-brand">
+				<img alt="Ferrari official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand1.png"/>
+			</div>
+			<div class="luxury-brands__single-brand">
+				<img alt="Maserati official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand2.png"/>
+			</div>
+			<div class="luxury-brands__single-brand">
+				<img alt="Jaguar official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand3.png"/>
+			</div>
+			<div class="luxury-brands__single-brand">
+				<img alt="Bentley official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand4.png"/>
+			</div>
+			<div class="luxury-brands__single-brand">
+				<img alt="Bugatti official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand5.png"/>
+			</div>
+			<div class="luxury-brands__single-brand">
+				<img alt="Porsche official logo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/brands/brand6.png"/>
+			</div>
+		</div>
+	</section>
+
+	<section class="hottest-cars-section">
+		<div class="inner-container">
+			<h2>Hottest cars right now 🔥</h2>
+			{% include('partials/hottest-cars.twig') %}
+		</div>
+	</section>
+
+	<section class="testimonials">
+		<div class="inner-container">
+			<h2>What customers say about us</h2>
+			{% include('partials/testimonials.twig') %}
+		</div>
+	</section>
+
+
+	<section class="clients">
+		<div class="inner-container">
+			<h2>You may even know some of our clients
+			</h2>
+			<div class="clients__list">
+				<div class="clients__list__single-item">
+					<img alt="Carlo Riva foto profilo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/famous-clients/famous-client-1.png"/>
+					<h3>Carlo Riva</h3>
+				</div>
+				<div class="clients__list__single-item">
+					<img alt="Angelina Jolie foto profilo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/famous-clients/famous-client-2.png"/>
+					<h3>Angelina Jolie</h3>
+				</div>
+				<div class="clients__list__single-item">
+					<img alt="Mark Tilbury foto profilo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/famous-clients/famous-client-3.png"/>
+					<h3>Mark Tilbury</h3>
+				</div>
+				<div class="clients__list__single-item">
+					<img alt="Gary Vee foto profilo" src="{{ function('get_stylesheet_directory_uri') }}/assets/images/famous-clients/famous-client-4.png"/>
+					<h3>Gary Vee</h3>
+				</div>
+			</div>
+			<a class="primary-button" href="{{ function('get_site_url') }}/car-collection/">Find the car of your
+												dreams</a>
+		</div>
+	</section>
+
+	{% include('partials/services.twig') %}
+
+</main>
+<script>
+	const searchBox = document.getElementById('search-box');
+const findYourCarInput = document.getElementById("find-your-car-input");
+
+findYourCarInput.addEventListener("focusin", (e) => {
+if (e.target.value != "") {
+if (! searchBox.classList.contains('active')) {
+searchBox.classList.add('active');
+}
+}
+});
+
+findYourCarInput.addEventListener("focusout", (e) => {
+searchBox.classList.remove('active');
+});
+
+findYourCarInput.addEventListener("input", (e) => {
+if (e.target.value != "") {
+if (! searchBox.classList.contains('active')) {
+searchBox.classList.add('active');
+}
+
+preliminary_search(e.target.value);
+} else {
+searchBox.classList.remove('active');
+}
+});
+
+function preliminary_search(query) {
+jQuery.ajax("/luxury-car-rental/wp-admin/admin-ajax.php", {
+type: "POST",
+data: {
+action: 'retrieve_basic_info_of_cars_query',
+query: query
+},
+success: function (result, status, xhrRequest) {
+if (JSON.parse(result)) {
+const searchedCars = JSON.parse(result);
+searchBox.innerHTML = "<p style='text-align: left; margin: 0px'>Suggestions:</p>";
+
+let searchResult = "";
+for (let i = 0; i < searchedCars.length; i++) {
+searchResult = "";
+
+searchResult += `<a class="search-box__search-result" href="${
+searchedCars[i].link
+}">`;
+searchResult += `<img src="${
+searchedCars[i].cover_image
+}" alt="${
+searchedCars[i].name
+} Car Cover"/>`;
+searchResult += `<p>${
+searchedCars[i].name
+}</p>`;
+searchResult += `<i class="fa-solid fa-arrow-right"></i>`;
+searchResult += `</a>`;
+
+searchBox.innerHTML += searchResult;
+}
+
+if (searchedCars.length == 0) 
+searchBox.innerHTML = "<p style='text-align: left; margin: 0px'>Sorry, this car isn't available...</p>";
+
+
+}
+},
+error: function (xhrRequest, status, errorMessage) {
+console.log(errorMessage);
+}
+});
+}
+</script>

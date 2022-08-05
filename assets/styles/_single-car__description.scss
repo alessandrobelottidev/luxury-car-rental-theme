@@ -1,0 +1,111 @@
+.single-car__description {
+    display: flex;
+    padding: 100px 10px 0px 10px;
+
+    &__general {
+        padding-left: 30px;
+
+        h1 {
+            margin-bottom: 6px;
+        }
+
+        b {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        p {
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .primary-button {
+            margin-bottom: 10px;
+        }
+
+        .primary-button,
+        .secondary-button {
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+    }
+
+    &__data {
+        padding-right: 10px;
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        &__gallery {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+
+            &__container {
+                flex: 1;
+                overflow: hidden;
+                aspect-ratio: 16 / 9;
+
+                border: 0px;
+                padding: 0px;
+
+                transition: all 0.2s;
+            }
+
+            &__container:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        &__gallery > div {
+            flex: 1;
+        }
+
+        &__table {
+            margin-top: 40px;
+
+            b {
+                font-size: 18px;
+            }
+
+            &__row {
+                padding: 10px 0px;
+                border-bottom: 1px solid $primary-color;
+
+                p {
+                    font-weight: 400;
+                    display: inline-block;
+                    width: max-content;
+                }
+
+                p:nth-child(2) {
+                    float: right;
+                }
+            }
+
+            &__row:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+.single-car__description > div {
+    flex: 1;
+}
+
+@media screen and (max-width: $md) {
+    .single-car__description {
+        flex-direction: column-reverse;
+        padding: 30px 10px;
+
+        &__general {
+            padding-left: 0px;
+            margin-bottom: 30px;
+        }
+    }
+}

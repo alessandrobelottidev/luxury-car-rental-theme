@@ -1,0 +1,130 @@
+<main id="car-collection">
+    <section class="inner-container car-collection">
+        <h1>My favourites</h1>
+
+        <div class="car-collection__grid" id="liked-cars-container">
+            <i style="font-size: 3rem;" class="fa-solid fa-spinner rotate"></i>
+        </div>
+    </section>
+</main>
+
+<script>
+    function loadLikedCars() {
+        let arr = [];
+
+        for (let a in localStorage) {
+            if (a.length >= 5 && a.substr(0, 4) === "car-") {
+                let id = a.substr(4, a.length - 4);
+                arr.push(parseInt(id));
+            }
+        }
+
+        jQuery.ajax("/luxury-car-rental/wp-admin/admin-ajax.php", {
+            type: "POST",
+            data: {
+                action: 'retrieve_cars',
+                arr: arr,
+            },
+            success: function (result, status, xhrRequest) {
+                let likedCarsContainer = document.getElementById("liked-cars-container");
+
+                if (JSON.parse(result)) {
+                    let cars = JSON.parse(result);
+
+                    likedCarsContainer.innerHTML = "";
+
+                    let car = '';
+                    for (let i = 0; i < cars.length; i++) {
+                        car = '';
+
+                        car += `<div onclick="window.location.href = '${cars[i].link}';" class="card" data-id="${cars[i].ID}">`;
+                        car += `<div class="card__img-container">`;
+                        car += `<img src="${cars[i].cover_image}" alt="${cars[i].name} Cover Image">`;
+                        car += `</div>`;
+                        car += `<div class="card__info">`;
+                        car += `<h3>${cars[i].name}</h3>`;
+                        car += `<p>Rent for ${cars[i].rental_price}€/day</p>`;
+                        car += `<a href="#nothing" onclick="update_car_likes(event, ${cars[i].ID});return false;" class="like-btn-card" id="car-${cars[i].ID}">`;
+                        car += `<i class="fa-solid fa-heart"></i>`;
+                        car += `</a>`;
+                        car += `</div>`;
+                        car += `</div>`;
+
+                        likedCarsContainer.innerHTML += car;
+                    }
+                } else {
+                    likedCarsContainer.innerHTML = '<div><h3>Go like some cars first ;)</h3><a style="margin: 10px auto 0 auto; display: block; width: max-content" class="primary-button" href="{{ function('get_site_url') }}/car-collection">View car collection</a></div>';
+                }
+            },
+            error: function (xhrRequest, status, errorMessage) {
+                console.log(errorMessage);
+                let likedCarsContainer = document.getElementById("liked-cars-container");
+                likedCarsContainer.innerHTML = "There's been an error...";
+            }
+        });
+    }
+
+    // Initialize likes
+    const likeButtons = document.getElementsByClassName('like-btn-card');
+    for (let i = 0; i < likeButtons.length; i++) {
+        if (localStorage.getItem(likeButtons[i].id) != null) {
+            likeButtons[i].innerHTML = '<i class="fa-solid fa-heart"></i>';
+        }
+    }
+
+    function update_car_likes(event, id) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (document.getElementById(`car-${id}`).innerHTML != '<i class="fa-solid fa-spinner rotate"></i>') {
+            document.getElementById(`car-${id}`).innerHTML = '<i class="fa-solid fa-spinner rotate"></i>';
+
+            if (localStorage.getItem(`car-${id}`) != null) {
+                jQuery.ajax("/luxury-car-rental//wp-admin/admin-ajax.php", {
+                    type: "POST",
+                    data: {
+                        action: 'update_like',
+                        id: id,
+                        like: false,
+                    },
+                    success: function (result, status, xhrRequest) {
+                        if (JSON.parse(result)) {
+                            document.getElementById(`car-${id}`).innerHTML = '<i class="fa-regular fa-heart"></i>';
+                            localStorage.removeItem(`car-${id}`);
+                        }
+                    },
+                    error: function (xhrRequest, status, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+            } else {
+                jQuery.ajax("/luxury-car-rental//wp-admin/admin-ajax.php", {
+                    type: "POST",
+                    data: {
+                        action: 'update_like',
+                        id: id,
+                        like: true,
+                    },
+                    success: function (result, status, xhrRequest) {
+                        if (JSON.parse(result)) {
+                            document.getElementById(`car-${id}`).innerHTML = '<i class="fa-solid fa-heart"></i>';
+                            localStorage.setItem(`car-${id}`, true);
+                        }
+                    },
+                    error: function (xhrRequest, status, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+            }
+        }
+
+        return false;
+    }
+
+    function init() {
+        loadLikedCars();
+    }
+
+    init();
+
+</script>

@@ -1,0 +1,56 @@
+.luxury-brands {
+    height: 100px;
+    background-color: $secondary-bg-color;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+
+    .inner-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    &__single-brand {
+        max-width: fit-content;
+        height: max-content;
+
+        img {
+            height: 60px;
+        }
+    }
+}
+
+@media screen and (max-width: $md) {
+    .luxury-brands {
+        .inner-container {
+            gap: 10px;
+        }
+
+        &__single-brand {
+            img {
+                height: 40px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $sm) {
+    .luxury-brands {
+        overflow: hidden;
+        min-height: 100px;
+        padding: 10px;
+
+        &__single-brand {
+            img {
+                height: 40px;
+            }
+        }
+
+        &__single-brand:nth-child(4),
+        &__single-brand:nth-child(5),
+        &__single-brand:nth-child(6) {
+            display: none;
+        }
+    }
+}

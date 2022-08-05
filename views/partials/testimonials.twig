@@ -1,0 +1,132 @@
+<div class="testimonials__carousel">
+    <div class="testimonials__carousel__inner">
+        <div class="testimonials__carousel__single-item" data-id="0">
+            <p>I normally only deal with the luxury collections from the two 'major' car rental companies. However, there are always issues with them; mostly car type substitutions. This was the first time I engaged Europe Luxury Cars and there were no issues of any kind. The car was in perfect condition; the service impeccable... I had no complaints. Picking the car up in one city and dropping it off in another was "no problem at all." I will now be using Europe Luxury Cars exclusively for my travels in Europe. And, I would like to thank them for relieving me from the almost certain disappointment when I use the 'major' car rental companies. Thanks again.... I really mean that.</p>
+            
+            <div class="testimonials__carousel__single-item__profile">
+                <div class="testimonials__carousel__single-item__profile__image">
+                    <img src="{{ function('get_stylesheet_directory_uri') }}/assets/images/profile-example-1.png" alt="Profile example 1" />
+                </div>
+                <div class="testimonials__carousel__single-item__profile__details">
+                    <p><b>John Doe</b></p>
+                    <div>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonials__carousel__single-item" data-id="1">
+            <p>Luxury Car Rental were professional from the start, I received an email within five minutes of requesting a quote for a specific vehicle and it was very competitively priced. They continued to impress by going above and beyond when my Boss was 'charged' for not having an International License, Luxury Car Rental settled everything with the Police Department and responded to all my panicked mails in a very timely manner. I cannot recommend them enough.</p>
+            
+            <div class="testimonials__carousel__single-item__profile">
+                <div class="testimonials__carousel__single-item__profile__image">
+                    <img src="{{ function('get_stylesheet_directory_uri') }}/assets/images/profile-example-2.png" alt="Profile example 2" />
+                </div>
+                <div class="testimonials__carousel__single-item__profile__details">
+                    <p><b>Elizabeth Stan</b></p>
+                    <div>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonials__carousel__single-item" data-id="2">
+            <p>I booked a Porsche 992 Carrera S Cabriolet for my recent trip to Spain and it was a seamless experience from beginning to end. I had awesome communication via email to start and then via Whatsapp as we got closer to my arrival and pickup. The booking agent and the representative who physically delivered the car were professional and courteous. The car was in virtually perfect shape (save for some super minor cosmetic stuff on a few wheels and on the underside of the front lip) and all issues present were electronically documented in the agreement. The car was clean and well optioned. It was a blast driving the 992 up and down the A397 from Marbella to Ronda. A366 is another incredible drive once you get to Ronda. I couldn't be happier with the experience aside from possibly paying less. Others have mentioned Luxury Car Rental (also GTLuxe who I believe provided the car) does charge a premium but frankly it was worth it to avoid any shady exotic car rental horror stories you hear out there. I can wholeheartedly recommend them. It was a pleasure from start to finish.</p>
+            
+            <div class="testimonials__carousel__single-item__profile">
+                <div class="testimonials__carousel__single-item__profile__image">
+                    <img src="{{ function('get_stylesheet_directory_uri') }}/assets/images/profile-example-3.png" alt="Profile example 3" />
+                </div>
+                <div class="testimonials__carousel__single-item__profile__details">
+                    <p><b>Carl Bron</b></p>
+                    <div>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="controls__single" onclick="previousSlide()">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <div class="controls__single" onclick="nextSlide()">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* INFINITE TESTIMONIALS SLIDER IMPLEMENTATION */
+const testimonialsSlides = document.getElementsByClassName("testimonials__carousel__single-item");
+let currentSlide = testimonialsSlides[0].dataset.id;
+const lastSlide = testimonialsSlides[testimonialsSlides.length - 1].dataset.id;
+
+function getPreviousSlide(slide) {
+    if (slide > 0) {
+        slide--;
+    } else {
+        slide = lastSlide;
+    }
+
+    return slide;
+}
+
+function getNextSlide(slide) {
+    if (slide < lastSlide) {
+        slide++;
+    } else {
+        slide = 0;
+    }
+
+    return slide;
+}
+
+function hideSlide(slide) {
+    const slideHTML = document.querySelector(`[data-id="${slide}"]`);
+    slideHTML.classList.remove("active");
+}
+
+function displaySlide(slide) {
+    const slideHTML = document.querySelector(`[data-id="${slide}"]`);
+    slideHTML.classList.add("active");
+}
+
+function previousSlide() {
+    hideSlide(currentSlide);
+    currentSlide = getPreviousSlide(currentSlide);
+    displaySlide(currentSlide);
+}
+
+function nextSlide() {
+    hideSlide(currentSlide);
+    currentSlide = getNextSlide(currentSlide);
+    displaySlide(currentSlide);
+}
+
+function init() {
+    for (let i = 0; i < testimonialsSlides.length; i++) {
+        hideSlide(i);
+    }
+
+    currentSlide = testimonialsSlides[0].dataset.id;
+    displaySlide(currentSlide);
+}
+
+init();
+</script>
